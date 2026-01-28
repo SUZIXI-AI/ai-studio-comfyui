@@ -1,113 +1,85 @@
-# AI Studio ComfyUI Docker 镜像
+# AI Studio ComfyUI 镜像
 
-AI Studio - 专业 AI 创作平台，基于 ComfyUI 的 Docker 镜像。
+> 专业 AI 创作平台，基于 ComfyUI 的 Docker 镜像
 
-## 特性
+[![GitHub](https://img.shields.io/badge/GitHub-SUZIXI--AI-blue)](https://github.com/SUZIXI-AI/ai-studio-comfyui)
+[![AutoDL](https://img.shields.io/badge/AutoDL-Art-green)](https://www.autodl.art)
 
-- 基于 PyTorch 2.1.0 + CUDA 12.1
+## 📋 基本信息
+
+| 项目 | 值 |
+|------|-----|
+| 框架 | PyTorch 2.1.0 |
+| CUDA | 12.1 |
+| Python | 3.10 |
+| 基础镜像 | Ubuntu 22.04 |
+
+## ✨ 特性
+
 - 预装 ComfyUI 最新版本
 - 自动 GPU/CPU 模式检测
-- 状态监控页面
+- 支持多种 GPU（4090、5090、A100 等）
+- 开箱即用，无需配置环境
 
-## 端口说明
+## 🚀 快速开始
 
-| 端口 | 服务 | 说明 |
-|------|------|------|
-| 6006 | 状态页 | 服务状态监控 API |
-| 6008 | ComfyUI | ComfyUI Web 界面 |
+### 1. 创建实例
 
-## 快速开始
+在 [AutoDL Art](https://www.autodl.art) 搜索 `AI-Studio-ComfyUI`，选择此镜像创建实例
 
-### 使用 Docker
+### 2. 启动服务
 
 ```bash
-# 拉取镜像
-docker pull ai-studio-comfyui
-
-# 运行容器（GPU 模式）
-docker run -d \
-  --gpus all \
-  -p 6006:6006 \
-  -p 6008:6008 \
-  -v /path/to/models:/workspace/ComfyUI/models \
-  -v /path/to/output:/workspace/ComfyUI/output \
-  --name ai-studio-comfyui \
-  ai-studio-comfyui
-
-# 运行容器（CPU 模式）
-docker run -d \
-  -p 6006:6006 \
-  -p 6008:6008 \
-  -v /path/to/models:/workspace/ComfyUI/models \
-  -v /path/to/output:/workspace/ComfyUI/output \
-  --name ai-studio-comfyui \
-  ai-studio-comfyui
+cd /root/ComfyUI
+python main.py --listen 0.0.0.0 --port 6006
 ```
 
-### 访问服务
+### 3. 访问服务
 
-- 状态页: http://localhost:6006
-- ComfyUI: http://localhost:6008
+- ComfyUI 界面：`http://localhost:6006`
 
-## 目录结构
+## 📁 目录结构
 
 ```
-/workspace/
-├── ComfyUI/
-│   ├── models/
-│   │   ├── checkpoints/    # Stable Diffusion 模型
-│   │   ├── loras/          # LoRA 模型
-│   │   ├── vae/            # VAE 模型
-│   │   ├── embeddings/     # Embedding 文件
-│   │   └── controlnet/     # ControlNet 模型
-│   ├── custom_nodes/       # 自定义节点
-│   ├── output/             # 输出目录
-│   └── input/              # 输入目录
-└── start.sh                # 启动脚本
+/root/
+└── ComfyUI/                # ComfyUI 主程序
+    ├── models/             # 模型目录
+    │   ├── checkpoints/    # Stable Diffusion 模型
+    │   ├── loras/          # LoRA 模型
+    │   ├── vae/            # VAE 模型
+    │   ├── embeddings/     # Embedding 文件
+    │   └── controlnet/     # ControlNet 模型
+    ├── custom_nodes/       # 自定义节点
+    ├── input/              # 输入文件
+    └── output/             # 输出文件
 ```
 
-## 自定义节点
+## 📦 模型放置
 
-将自定义节点放入 `/workspace/ComfyUI/custom_nodes/` 目录，重启容器即可生效。
+将模型文件放入对应目录：
 
-## 模型放置
+| 模型类型 | 目录 |
+|---------|------|
+| Stable Diffusion | `models/checkpoints/` |
+| LoRA | `models/loras/` |
+| VAE | `models/vae/` |
+| Embedding | `models/embeddings/` |
+| ControlNet | `models/controlnet/` |
 
-将模型文件放入对应的 models 子目录：
+## 🔧 自定义节点
 
-- Stable Diffusion 模型 → `models/checkpoints/`
-- LoRA 模型 → `models/loras/`
-- VAE 模型 → `models/vae/`
-- Embedding → `models/embeddings/`
-- ControlNet → `models/controlnet/`
+将节点放入 `/root/ComfyUI/custom_nodes/` 目录，重启服务即可生效
 
-## 状态 API
+## ⚙️ 环境验证
 
-访问 `http://localhost:6006/status` 获取服务状态：
-
-```json
-{
-  "service": "AI Studio ComfyUI",
-  "status": "running",
-  "comfyui_port": 6008,
-  "status_port": 6006,
-  "version": "1.0"
-}
+```bash
+cd /root/ComfyUI
+python main.py --help
 ```
 
-## 环境变量
-
-| 变量名 | 默认值 | 说明 |
-|--------|--------|------|
-| COMFYUI_PORT | 6008 | ComfyUI 端口 |
-| STATUS_PORT | 6006 | 状态页端口 |
-
-## 许可证
+## 📄 许可证
 
 MIT License
-
-## 作者
-
-AI Studio Team
 
 ---
 
